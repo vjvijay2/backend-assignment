@@ -59,6 +59,7 @@
                 const result = await response.json();
                 document.getElementById('message').innerText = result.msg;
             } catch (error) {
+                console.error('Fetch error:', error); // Log the error to the console
                 document.getElementById('message').innerText = 'Error: ' + error.message;
             }
         });

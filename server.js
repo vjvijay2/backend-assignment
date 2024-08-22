@@ -7,14 +7,15 @@ const bcrypt = require('bcrypt');
 const User = require('./models/User');
 
 const app = express();
-app.use(bodyParser.json());
-app.use(cors());
-app.use(express.static('public'));
-const cors = require('cors');
-app.use(cors({
-    origin: 'https://backend-assignment-git-main-vjvijay2s-projects.vercel.app'
-}));
 
+// Middleware setup
+app.use(bodyParser.json());
+app.use(cors({
+    origin: 'https://your-frontend-deployment-url.vercel.app', // Replace with your actual frontend URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type']
+}));
+app.use(express.static('public'));
 
 // Connect to MongoDB using the URI from .env
 mongoose.connect(process.env.MONGO_URI, {
@@ -46,7 +47,7 @@ app.post('/api/register', async (req, res) => {
         await user.save();
         res.status(201).json({ msg: 'User registered successfully' });
     } catch (err) {
-        console.error(err); // Log error to the console
+        console.error('Error during registration:', err); // Log error to the console
         res.status(500).json({ msg: 'Server error' });
     }
 });
@@ -63,6 +64,7 @@ app.post('/api/login', async (req, res) => {
 
         res.json({ msg: 'Login successful' });
     } catch (err) {
+        console.error('Error during login:', err); // Log error to the console
         res.status(500).json({ msg: 'Server error' });
     }
 });
@@ -73,6 +75,7 @@ app.get('/api/users', async (req, res) => {
         const users = await User.find();
         res.json(users);
     } catch (err) {
+        console.error('Error fetching users:', err); // Log error to the console
         res.status(500).json({ msg: 'Server error' });
     }
 });
@@ -90,6 +93,7 @@ app.put('/api/user/:id', async (req, res) => {
 
         res.json({ msg: 'User updated successfully' });
     } catch (err) {
+        console.error('Error updating user:', err); // Log error to the console
         res.status(500).json({ msg: 'Server error' });
     }
 });
