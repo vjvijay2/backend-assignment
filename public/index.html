@@ -81,134 +81,70 @@
 </body>
 </html> -->
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration & Login</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background-color: #f4f4f4;
+    <title>Register</title>
+    <script>
+        async function registerUser(event) {
+            event.preventDefault(); // Prevents the default form submission behavior
+
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const phone = document.getElementById('phone').value;
+            const profession = document.getElementById('profession').value;
+
+            try {
+                // Make a POST request to the backend API
+                const response = await fetch('https://hello-r0m8bv9tz-vjvijay2s-projects.vercel.app/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name, email, password, phone, profession }),
+                });
+
+                // Check if the response is OK
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                // Get the JSON data from the response
+                const data = await response.json();
+
+                // Display a success message
+                alert('User registered successfully!');
+            } catch (error) {
+                // Display an error message
+                console.error('Error:', error);
+                alert('Error registering user. Please try again.');
+            }
         }
-        form {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            box-sizing: border-box;
-        }
-        input {
-            width: 100%;
-            padding: 0.5rem;
-            margin: 0.5rem 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            width: 100%;
-            padding: 0.5rem;
-            border: none;
-            border-radius: 4px;
-            background-color: #007bff;
-            color: white;
-            font-size: 1rem;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .message {
-            color: red;
-            margin-top: 1rem;
-        }
-    </style>
+    </script>
 </head>
 <body>
-    <h1>Registration & Login</h1>
+    <h1>Register</h1>
+    <form onsubmit="registerUser(event)">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
 
-    <div id="register-form">
-        <h2>Register</h2>
-        <form id="register">
-            <input type="text" id="register-name" placeholder="Name" required>
-            <input type="email" id="register-email" placeholder="Email" required>
-            <input type="password" id="register-password" placeholder="Password" required>
-            <input type="text" id="register-phone" placeholder="Phone">
-            <input type="text" id="register-profession" placeholder="Profession">
-            <button type="submit">Register</button>
-            <div class="message" id="register-message"></div>
-        </form>
-    </div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
 
-    <div id="login-form" style="margin-top: 2rem;">
-        <h2>Login</h2>
-        <form id="login">
-            <input type="email" id="login-email" placeholder="Email" required>
-            <input type="password" id="login-password" placeholder="Password" required>
-            <button type="submit">Login</button>
-            <div class="message" id="login-message"></div>
-        </form>
-    </div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
 
-    <script>
-        // Replace with your actual backend URL
-        const apiUrl = 'https://your-backend-url.vercel.app/api';
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone"><br><br>
 
-        document.getElementById('register').addEventListener('submit', async (e) => {
-            e.preventDefault();
+        <label for="profession">Profession:</label>
+        <input type="text" id="profession" name="profession"><br><br>
 
-            const name = document.getElementById('register-name').value;
-            const email = document.getElementById('register-email').value;
-            const password = document.getElementById('register-password').value;
-            const phone = document.getElementById('register-phone').value;
-            const profession = document.getElementById('register-profession').value;
-
-            try {
-                const response = await fetch(`${apiUrl}/register`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, password, phone, profession })
-                });
-
-                const data = await response.json();
-                if (!response.ok) throw new Error(data.msg || 'Something went wrong');
-
-                document.getElementById('register-message').textContent = 'Registration successful!';
-                document.getElementById('register-message').style.color = 'green';
-            } catch (error) {
-                document.getElementById('register-message').textContent = error.message;
-            }
-        });
-
-        document.getElementById('login').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-
-            try {
-                const response = await fetch(`${apiUrl}/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                });
-
-                const data = await response.json();
-                if (!response.ok) throw new Error(data.msg || 'Something went wrong');
-
-                document.getElementById('login-message').textContent = 'Login successful!';
-                document.getElementById('login-message').style.color = 'green';
-            } catch (error) {
-                document.getElementById('login-message').textContent = error.message;
-            }
-        });
-    </script>
+        <input type="submit" value="Register">
+    </form>
 </body>
 </html>

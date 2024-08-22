@@ -131,7 +131,7 @@ const app = express();
 
 // CORS Configuration
 app.use(cors({
-    origin: 'https://hello-steel-seven.vercel.app', // Replace with your frontend URL
+    origin: 'https://hello-r0m8bv9tz-vjvijay2s-projects.vercel.app/api/register', // Replace with your frontend URL
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
