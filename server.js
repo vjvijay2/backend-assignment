@@ -22,7 +22,7 @@ mongoose.connect(process.env.MONGO_URI, {
 // Register user
 app.post('/api/register', async (req, res) => {
     try {
-        const { name, password, email, phone, profession } = req.body;
+        const { name, email, password, phone, profession } = req.body;
 
         // Validate input fields
         if (!name || !password || !email || !phone || !profession) {
@@ -90,7 +90,6 @@ app.put('/api/user/:id', async (req, res) => {
 });
 
 // Delete user
-// Delete user
 app.delete('/api/user/:id', async (req, res) => {
     console.log('Received DELETE request for ID:', req.params.id); // Debugging
     try {
@@ -116,10 +115,6 @@ app.delete('/api/user/:id', async (req, res) => {
         res.status(500).json({ msg: 'Server error' });
     }
 });
-
-
-
-
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
