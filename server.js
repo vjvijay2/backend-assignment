@@ -145,32 +145,31 @@ mongoose.connect(process.env.MONGO_URI, {
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log('MongoDB connection error:', err));
 
-// Register user
-app.post('/api/register', async (req, res) => {
-    try {
-        const { name, email, password, phone, profession } = req.body;
-
-        // Validate input fields
-        if (!name || !password || !email || !phone || !profession) {
-            return res.status(400).json({ msg: 'All fields are required' });
+    app.post('/api/register', async (req, res) => {
+        try {
+            const { name, email, password, phone, profession } = req.body;
+    
+            // Validate input fields
+            if (!name || !password || !email || !phone || !profession) {
+                return res.status(400).json({ msg: 'All fields are required' });
+            }
+    
+            // Check if user already exists
+            let user = await User.findOne({ email });
+            if (user) return res.status(400).json({ msg: 'User already exists' });
+    
+            // Encrypt the password
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(password, salt);
+    
+            user = new User({ name, password: hashedPassword, email, phone, profession });
+            await user.save();
+            res.status(201).json({ msg: 'User registered successfully' });
+        } catch (err) {
+            console.error(err); // Log error to the console
+            res.status(500).json({ msg: 'Server error' });
         }
-
-        // Check if user already exists
-        let user = await User.findOne({ email });
-        if (user) return res.status(400).json({ msg: 'User already exists' });
-
-        // Encrypt the password
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-
-        user = new User({ name, password: hashedPassword, email, phone, profession });
-        await user.save();
-        res.status(201).json({ msg: 'User registered successfully' });
-    } catch (err) {
-        console.error(err); // Log error to the console
-        res.status(500).json({ msg: 'Server error' });
-    }
-});
+    });
 
 // Login user
 app.post('/api/login', async (req, res) => {
