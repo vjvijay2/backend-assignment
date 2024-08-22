@@ -129,9 +129,15 @@ const User = require('./models/User');
 
 const app = express();
 
+// CORS Configuration
+app.use(cors({
+    origin: 'https://hello-steel-seven.vercel.app', // Replace with your frontend URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 // Middleware
 app.use(bodyParser.json());
-app.use(cors());
 app.use(express.static('public'));
 
 // Connect to MongoDB using the URI from .env
