@@ -10,6 +10,11 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static('public'));
+const cors = require('cors');
+app.use(cors({
+    origin: 'https://backend-assignment-git-main-vjvijay2s-projects.vercel.app'
+}));
+
 
 // Connect to MongoDB using the URI from .env
 mongoose.connect(process.env.MONGO_URI, {
